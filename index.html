@@ -1,60 +1,66 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ส่งสวัสดีตอนเช้า</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>แชร์รูป Flex</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <style>
     body {
-      margin: 0;
-      padding: 0;
       font-family: sans-serif;
-      background-color: #f2f2f2;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      background: #f9f9f9;
       text-align: center;
     }
-
-    h2 {
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-      color: #333;
+    input {
+      width: 90%;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 16px;
     }
-
+    img {
+      width: 90%;
+      max-width: 300px;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
     button {
-      padding: 14px 24px;
-      font-size: 1.1rem;
-      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
       background-color: #06c755;
       color: white;
-      border-radius: 8px;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: background-color 0.3s;
-    }
-
-    button:hover {
-      background-color: #04a84f;
     }
   </style>
 </head>
 <body>
-  <h2>กดปุ่มเพื่อส่งภาพ<br>“สวัสดีตอนเช้า”</h2>
-  <button onclick="sendFlex()">📤 ส่งรูปให้เพื่อน</button>
+  <h2>📤 แชร์ Flex พร้อมรูปภาพ</h2>
+  
+  <input
+    type="text"
+    id="imageUrl"
+    value="https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_2_restaurant.png"
+    oninput="updatePreview()"
+  />
+  <br />
+  <img id="preview" src="https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_2_restaurant.png" alt="preview image"/>
+  <br />
+  <button onclick="sendFlex()">ส่ง Flex ให้เพื่อน</button>
 
   <script>
     async function sendFlex() {
       try {
-        await liff.init({ liffId: "2005606595-0RDP7Vlj" }); // ตรวจสอบว่า LIFF ID ถูกต้อง
+        await liff.init({ liffId: "2005606595-0RDP7Vij" }); // ✅ ใส่ LIFF ID
 
         if (!liff.isLoggedIn()) {
           liff.login();
           return;
         }
+
+        const imageUrl = document.getElementById("imageUrl").value;
 
         const flexMessage = {
           type: "flex",
@@ -63,23 +69,41 @@
             type: "bubble",
             hero: {
               type: "image",
-              url: "https://www.matichorn.com/8AP21D.jpg",
+              url: imageUrl,
               size: "full",
               aspectRatio: "20:13",
               aspectMode: "cover"
+            },
+            body: {
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "text",
+                  text: "สวัสดีตอนเช้า ☀️",
+                  weight: "bold",
+                  size: "xl",
+                  align: "center"
+                }
+              ]
             }
           }
         };
 
         const result = await liff.shareTargetPicker([flexMessage]);
         if (result) {
-          alert("✅ ส่งข้อความแล้ว!");
+          alert("✅ ส่งรูปแล้วเรียบร้อย");
         } else {
           alert("❌ ผู้ใช้ยกเลิกการส่ง");
         }
       } catch (err) {
         alert("❌ เกิดข้อผิดพลาด: " + err);
       }
+    }
+
+    function updatePreview() {
+      const url = document.getElementById("imageUrl").value;
+      document.getElementById("preview").src = url;
     }
   </script>
 </body>
