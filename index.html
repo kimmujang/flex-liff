@@ -1,55 +1,98 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ส่งสวัสดีตอนเช้า</title>
-  <meta charset="utf-8">
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    button {
+      padding: 14px 24px;
+      font-size: 1.1rem;
+      border: none;
+      background-color: #06c755;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #04a84f;
+    }
+  </style>
 </head>
 <body>
-  <h2>กดปุ่มเพื่อส่งภาพ "สวัสดีตอนเช้า"</h2>
-  <button onclick="sendFlex()">ส่งรูปให้เพื่อน</button>
+  <h2>กดปุ่มเพื่อส่งภาพ<br>“สวัสดีตอนเช้า”</h2>
+  <button onclick="sendFlex()">📤 ส่งรูปให้เพื่อน</button>
 
   <script>
     async function sendFlex() {
-      await liff.init({ liffId: "2005606595-0RDP7Vlj" }); // แทนที่ด้วย LIFF ID ของคุณ
+      try {
+        await liff.init({ liffId: "2005606595-0RDP7Vlj" }); // ตรวจสอบว่า LIFF ID ถูกต้อง
 
-      if (!liff.isLoggedIn()) {
-        liff.login();
-        return;
-      }
-
-      const flexMessage = {
-        type: "flex",
-        altText: "สวัสดีตอนเช้า ☀️",
-        contents: {
-          type: "bubble",
-          hero: {
-            type: "image",
-            url: "https://as2.ftcdn.net/jpg/03/14/00/91/1000_F_314009144_Kk42jUQsW0HdhTwsdH7BnkE49o61xfG7.jpg",
-            size: "full",
-            aspectRatio: "20:13",
-            aspectMode: "cover"
-          },
-          body: {
-            type: "box",
-            layout: "vertical",
-            contents: [
-              {
-                type: "text",
-                text: "สวัสดีตอนเช้า ☀️",
-                weight: "bold",
-                size: "xl",
-                align: "center"
-              }
-            ]
-          }
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
         }
-      };
 
-      liff.shareTargetPicker([flexMessage])
-        .then(() => alert("ส่งข้อความแล้ว!"))
-        .catch(err => alert("เกิดข้อผิดพลาด: " + err));
+        const flexMessage = {
+          type: "flex",
+          altText: "สวัสดีตอนเช้า ☀️",
+          contents: {
+            type: "bubble",
+            hero: {
+              type: "image",
+              url: "https://www.matichorn.com/8AP21D.jpg",
+              size: "full",
+              aspectRatio: "20:13",
+              aspectMode: "cover"
+            },
+            body: {
+              type: "box",
+              layout: "vertical",
+              contents: [
+                {
+                  type: "text",
+                  text: "สวัสดีตอนเช้า ☀️",
+                  weight: "bold",
+                  size: "xl",
+                  align: "center"
+                }
+              ]
+            }
+          }
+        };
+
+        const result = await liff.shareTargetPicker([flexMessage]);
+        if (result) {
+          alert("✅ ส่งข้อความแล้ว!");
+        } else {
+          alert("❌ ผู้ใช้ยกเลิกการส่ง");
+        }
+      } catch (err) {
+        alert("❌ เกิดข้อผิดพลาด: " + err);
+      }
     }
   </script>
 </body>
