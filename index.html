@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ส่งสวัสดีตอนเช้า</title>
+  <title>ส่งรูป Flex</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <style>
     body {
@@ -55,16 +55,10 @@
     button:hover {
       background-color: #04a84f;
     }
-
-    small {
-      color: #666;
-      font-size: 0.9rem;
-      margin-bottom: 8px;
-    }
   </style>
 </head>
 <body>
-  <h2>📤 ส่ง Flex พร้อมรูปภาพ</h2>
+  <h2>📤 ส่งรูปผ่าน Flex Message</h2>
 
   <input
     type="text"
@@ -73,7 +67,6 @@
     value="https://as2.ftcdn.net/jpg/03/14/00/91/1000_F_314009144_Kk42jUQsW0HdhTwsdH7BnkE49o61xfG7.jpg"
     oninput="updatePreview()"
   />
-  <small>ลิงก์ปัจจุบัน: <span id="currentUrl">https://as2.ftcdn.net/jpg/03/14/00/91/1000_F_314009144_Kk42jUQsW0HdhTwsdH7BnkE49o61xfG7.jpg</span></small>
   <br/>
   <img id="preview" src="https://as2.ftcdn.net/jpg/03/14/00/91/1000_F_314009144_Kk42jUQsW0HdhTwsdH7BnkE49o61xfG7.jpg" alt="ตัวอย่างรูปภาพ" />
 
@@ -83,12 +76,11 @@
     function updatePreview() {
       const url = document.getElementById("imageUrl").value;
       document.getElementById("preview").src = url;
-      document.getElementById("currentUrl").textContent = url;
     }
 
     async function sendFlex() {
       try {
-        await liff.init({ liffId: "2005606595-0RDP7Vlj" }); // ✅ เปลี่ยน liffId ตรงนี้ถ้าคุณใช้ตัวอื่น
+        await liff.init({ liffId: "2005606595-0RDP7Vlj" });
 
         if (!liff.isLoggedIn()) {
           liff.login();
@@ -99,7 +91,7 @@
 
         const flexMessage = {
           type: "flex",
-          altText: "สวัสดีตอนเช้า ☀️",
+          altText: "📤 คุณได้รับรูปภาพ",
           contents: {
             type: "bubble",
             hero: {
@@ -108,26 +100,13 @@
               size: "full",
               aspectRatio: "20:13",
               aspectMode: "cover"
-            },
-            body: {
-              type: "box",
-              layout: "vertical",
-              contents: [
-                {
-                  type: "text",
-                  text: "สวัสดีตอนเช้า ☀️",
-                  weight: "bold",
-                  size: "xl",
-                  align: "center"
-                }
-              ]
             }
           }
         };
 
         const result = await liff.shareTargetPicker([flexMessage]);
         if (result) {
-          alert("✅ ส่งข้อความแล้ว!");
+          alert("✅ ส่งรูปเรียบร้อยแล้ว!");
         } else {
           alert("❌ ผู้ใช้ยกเลิกการส่ง");
         }
