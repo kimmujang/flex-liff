@@ -70,12 +70,12 @@
     type="text"
     id="imageUrl"
     placeholder="ใส่ลิงก์รูปภาพที่ต้องการ"
-    value="https://www.matichorn.com/8AP21D.jpg"
+    value="https://as2.ftcdn.net/jpg/03/14/00/91/1000_F_314009144_Kk42jUQsW0HdhTwsdH7BnkE49o61xfG7.jpg"
     oninput="updatePreview()"
   />
-  <small>ลิงก์ปัจจุบัน: <span id="currentUrl">https://www.matichorn.com/8AP21D.jpg</span></small>
+  <small>ลิงก์ปัจจุบัน: <span id="currentUrl">https://as2.ftcdn.net/jpg/03/14/00/91/1000_F_314009144_Kk42jUQsW0HdhTwsdH7BnkE49o61xfG7.jpg</span></small>
   <br/>
-  <img id="preview" src="https://www.matichorn.com/8AP21D.jpg" alt="ตัวอย่างรูปภาพ" />
+  <img id="preview" src="https://as2.ftcdn.net/jpg/03/14/00/91/1000_F_314009144_Kk42jUQsW0HdhTwsdH7BnkE49o61xfG7.jpg" alt="ตัวอย่างรูปภาพ" />
 
   <button onclick="sendFlex()">ส่งรูปให้เพื่อน</button>
 
@@ -88,7 +88,7 @@
 
     async function sendFlex() {
       try {
-        await liff.init({ liffId: "2005606595-0RDP7Vij" }); // ✅ ใส่ LIFF ID ให้ถูกต้อง
+        await liff.init({ liffId: "2005606595-0RDP7Vij" }); // ✅ เปลี่ยน liffId ตรงนี้ถ้าคุณใช้ตัวอื่น
 
         if (!liff.isLoggedIn()) {
           liff.login();
