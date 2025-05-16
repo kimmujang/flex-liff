@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ส่งรูป Flex</title>
+  <title>ส่งรูปผ่าน Flex</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <style>
     body {
@@ -24,14 +24,34 @@
       margin-bottom: 12px;
     }
 
-    input {
+    .input-container {
+      display: flex;
+      justify-content: center;
       width: 95%;
       max-width: 500px;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    input {
+      flex: 1;
       padding: 10px;
       font-size: 1rem;
-      margin-bottom: 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
+    }
+
+    .clear-btn {
+      padding: 10px 14px;
+      font-size: 1rem;
+      background-color: #ccc;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .clear-btn:hover {
+      background-color: #aaa;
     }
 
     img {
@@ -60,14 +80,17 @@
 <body>
   <h2>📤 ส่งรูปผ่าน Flex Message</h2>
 
-  <input
-    type="text"
-    id="imageUrl"
-    placeholder="ใส่ลิงก์รูปภาพที่ต้องการ"
-    value="https://as2.ftcdn.net/jpg/03/14/00/91/1000_F_314009144_Kk42jUQsW0HdhTwsdH7BnkE49o61xfG7.jpg"
-    oninput="updatePreview()"
-  />
-  <br/>
+  <div class="input-container">
+    <input
+      type="text"
+      id="imageUrl"
+      placeholder="ใส่ลิงก์รูปภาพที่ต้องการ"
+      value="https://as2.ftcdn.net/jpg/03/14/00/91/1000_F_314009144_Kk42jUQsW0HdhTwsdH7BnkE49o61xfG7.jpg"
+      oninput="updatePreview()"
+    />
+    <button class="clear-btn" onclick="clearUrl()">ล้าง</button>
+  </div>
+
   <img id="preview" src="https://as2.ftcdn.net/jpg/03/14/00/91/1000_F_314009144_Kk42jUQsW0HdhTwsdH7BnkE49o61xfG7.jpg" alt="ตัวอย่างรูปภาพ" />
 
   <button onclick="sendFlex()">ส่งรูปให้เพื่อน</button>
@@ -75,7 +98,12 @@
   <script>
     function updatePreview() {
       const url = document.getElementById("imageUrl").value;
-      document.getElementById("preview").src = url;
+      document.getElementById("preview").src = url || "https://via.placeholder.com/320x208?text=Preview";
+    }
+
+    function clearUrl() {
+      document.getElementById("imageUrl").value = "";
+      updatePreview();
     }
 
     async function sendFlex() {
@@ -87,7 +115,11 @@
           return;
         }
 
-        const imageUrl = document.getElementById("imageUrl").value;
+        const imageUrl = document.getElementById("imageUrl").value.trim();
+        if (!imageUrl) {
+          alert("กรุณาใส่ลิงก์รูปภาพก่อนส่ง");
+          return;
+        }
 
         const flexMessage = {
           type: "flex",
