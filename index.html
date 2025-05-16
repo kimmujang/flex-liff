@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ส่งสวัสดีตอนเช้า</title>
+  <meta charset="utf-8">
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+  <h2>กดปุ่มเพื่อส่งภาพ "สวัสดีตอนเช้า"</h2>
+  <button onclick="sendFlex()">ส่งรูปให้เพื่อน</button>
+
+  <script>
+    async function sendFlex() {
+      await liff.init({ liffId: "2005606595-0RDP7Vlj" }); // แทนที่ด้วย LIFF ID ของคุณ
+
+      if (!liff.isLoggedIn()) {
+        liff.login();
+        return;
+      }
+
+      const flexMessage = {
+        type: "flex",
+        altText: "สวัสดีตอนเช้า ☀️",
+        contents: {
+          type: "bubble",
+          hero: {
+            type: "image",
+            url: "https://as2.ftcdn.net/jpg/03/14/00/91/1000_F_314009144_Kk42jUQsW0HdhTwsdH7BnkE49o61xfG7.jpg",
+            size: "full",
+            aspectRatio: "20:13",
+            aspectMode: "cover"
+          },
+          body: {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "text",
+                text: "สวัสดีตอนเช้า ☀️",
+                weight: "bold",
+                size: "xl",
+                align: "center"
+              }
+            ]
+          }
+        }
+      };
+
+      liff.shareTargetPicker([flexMessage])
+        .then(() => alert("ส่งข้อความแล้ว!"))
+        .catch(err => alert("เกิดข้อผิดพลาด: " + err));
+    }
+  </script>
+</body>
+</html>
