@@ -3,57 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>แชร์รูป Flex</title>
+  <title>ส่งสวัสดีตอนเช้า</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <style>
     body {
-      font-family: sans-serif;
       margin: 0;
       padding: 20px;
-      background: #f9f9f9;
+      font-family: sans-serif;
+      background-color: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
       text-align: center;
     }
+
+    h2 {
+      font-size: 1.4rem;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
     input {
-      width: 90%;
+      width: 95%;
+      max-width: 500px;
       padding: 10px;
+      font-size: 1rem;
       margin-bottom: 10px;
-      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
     }
+
     img {
-      width: 90%;
-      max-width: 300px;
-      margin: 10px 0;
-      border-radius: 8px;
+      width: 95%;
+      max-width: 320px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
     }
+
     button {
       padding: 12px 24px;
-      font-size: 16px;
+      font-size: 1.1rem;
+      border: none;
       background-color: #06c755;
       color: white;
-      border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #04a84f;
+    }
+
+    small {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
     }
   </style>
 </head>
 <body>
-  <h2>📤 แชร์ Flex พร้อมรูปภาพ</h2>
-  
+  <h2>📤 ส่ง Flex พร้อมรูปภาพ</h2>
+
   <input
     type="text"
     id="imageUrl"
-    value="https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_2_restaurant.png"
+    placeholder="ใส่ลิงก์รูปภาพที่ต้องการ"
+    value="https://www.matichorn.com/8AP21D.jpg"
     oninput="updatePreview()"
   />
-  <br />
-  <img id="preview" src="https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_2_restaurant.png" alt="preview image"/>
-  <br />
-  <button onclick="sendFlex()">ส่ง Flex ให้เพื่อน</button>
+  <small>ลิงก์ปัจจุบัน: <span id="currentUrl">https://www.matichorn.com/8AP21D.jpg</span></small>
+  <br/>
+  <img id="preview" src="https://www.matichorn.com/8AP21D.jpg" alt="ตัวอย่างรูปภาพ" />
+
+  <button onclick="sendFlex()">ส่งรูปให้เพื่อน</button>
 
   <script>
+    function updatePreview() {
+      const url = document.getElementById("imageUrl").value;
+      document.getElementById("preview").src = url;
+      document.getElementById("currentUrl").textContent = url;
+    }
+
     async function sendFlex() {
       try {
-        await liff.init({ liffId: "2005606595-0RDP7Vij" }); // ✅ ใส่ LIFF ID
+        await liff.init({ liffId: "2005606595-0RDP7Vij" }); // ✅ ใส่ LIFF ID ให้ถูกต้อง
 
         if (!liff.isLoggedIn()) {
           liff.login();
@@ -92,18 +127,13 @@
 
         const result = await liff.shareTargetPicker([flexMessage]);
         if (result) {
-          alert("✅ ส่งรูปแล้วเรียบร้อย");
+          alert("✅ ส่งข้อความแล้ว!");
         } else {
           alert("❌ ผู้ใช้ยกเลิกการส่ง");
         }
       } catch (err) {
         alert("❌ เกิดข้อผิดพลาด: " + err);
       }
-    }
-
-    function updatePreview() {
-      const url = document.getElementById("imageUrl").value;
-      document.getElementById("preview").src = url;
     }
   </script>
 </body>
